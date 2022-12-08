@@ -1,0 +1,111 @@
+<!-- produk detail -->
+<?php
+    if(isset($_GET['id_brg'])){
+        $id =$_GET['id_brg'];
+    }
+    else {
+        die ("Error. No ID Selected!");    
+    }
+    include "koneksi.php";
+
+    $query    =mysqli_query($conn, "SELECT * FROM produk WHERE id_brg='$id'");
+    $result    =mysqli_fetch_array($query);   
+?>
+<br>
+<br>
+<br>
+<div class="container">
+<div class="card mb-3">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="<?php base()?>assets/image/<?=$result['img']?>" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title"> <?=$result['nm_brg']?></h5>
+         Kondisi : <b> <?= $result['kondisi']?>  </b><br>
+         Kategori: <b> <?= $result['kategori']?> </b><br>
+        <p class="card-text"> Deskripsi : <br> <?= $result['deskripsi']?></p>
+        <b> <?="Rp".number_format($result['harga']); ?></b> <br>
+        <p style="color:orange" class="m-1">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            </p>
+        <a href="<?php base()?>login" class="btn btn-primary">Price</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+    
+
+
+
+    <!-- Produk.php -->
+
+    <br>
+<br>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+<div class="col-6 col-md-2 ">
+<input  type="search" placeholder="Search products... " name="carinama" id="carinama" autocomplete="off" class="form-control" >
+</div>
+  <form>
+      <center>
+      <div class="row">
+        <?php 
+          include ('koneksi.php'); 
+          $conn=mysqli_query($conn,"select * from produk");
+          while($h=mysqli_fetch_array($conn)){
+          ?>
+            <div class="col-6 col-md-2">
+              <a href="<?php base()?>produk_detail/?id=<?=$h['id_brg'];?>" class="btn btn-light">
+                <div class="card-body">
+                  <img src="<?php base()?>assets/image/<?=$h['img']; ?>" class="card-img-top" alt="img" style="width: 180px;height:180px;">
+                  <p class="card-text m-1" style="white-space: pre-wrap;"><?=substr($h['nm_brg'], 0,17  ,); ?> ...</p>
+                  <p><b><?="Rp".number_format($h['harga']); ?></b></p>
+                  <p style="color:orange" class="m-1">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  </p>
+                  <p class="card-text" hidden><?=$h['kategori']; ?></p>
+                </div>
+              </a>
+            </div>
+            
+          <?php
+          }
+          ?>
+      </div>
+      </center>
+  </form>
+<br>
+
+<script type="text/javascript">
+      $(document).ready(function(){
+
+      $('#carinama').on('keyup', function(){
+
+        $('form').load('<?php base()?>ajax/?nm_brg=' + $('#carinama').val());
+
+      });
+
+      });
+</script>
+<style>
+input{
+
+  width:30%;
+  margin: 1px;
+  height: 10%;
+  font-size: 12pt;
+  padding:5px 5px 5px 10px;
+  margin:1%;
+  border-radius: 10px;
+}
+</style>
